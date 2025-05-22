@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using CareNet_System.Models;
-using CareNet_System.Repostatory;
+using CareNet_System.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CareNet_System
 {
@@ -10,21 +13,48 @@ namespace CareNet_System
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
             builder.Services.AddControllersWithViews();
 
-           
+            // ✅ Register custom authorization filter (if needed)
+            builder.Services.AddScoped<AuthorizeFilter>();
 
-            builder.Services.AddDbContext<HosPitalContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("cs")); });
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            // ✅ Configure cookie authentication to use custom login page
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // ✅ Custom login URL
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+            });
+
+            // ✅ Configure database context
+            builder.Services.AddDbContext<HosPitalContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("cs")));
+
+            // ✅ Configure ASP.NET Identity (customized)
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+            .AddEntityFrameworkStores<HosPitalContext>()
+            .AddDefaultTokenProviders();
+
+            // ✅ Register repositories
+            builder.Services.AddScoped<IRepository<Staff>, StaffRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // ✅ الاحتفاظ بمستودع الأقسام أيضًا
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // ✅ Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -33,8 +63,11 @@ namespace CareNet_System
 
             app.UseRouting();
 
+            // ✅ Order is important: Auth before endpoints
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            // ✅ Configure routing
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

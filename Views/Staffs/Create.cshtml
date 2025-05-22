@@ -1,0 +1,74 @@
+﻿@model CareNet_System.Models.Staff
+@attribute [Authorize]
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create New Staff</h1>
+
+<h4>Staff</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="title" class="control-label"></label>
+                <select asp-for="title" class="form-control" asp-items="ViewBag.TitleList"></select>
+                <span asp-validation-for="title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="salary" class="control-label"></label>
+                <input asp-for="salary" class="form-control" />
+                <span asp-validation-for="salary" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="seniority_level" class="control-label"></label>
+                <select asp-for="seniority_level" class="form-control" asp-items="ViewBag.LevelList"></select>
+                <span asp-validation-for="seniority_level" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="experience_years" class="control-label"></label>
+                <input asp-for="experience_years" class="form-control" />
+                <span asp-validation-for="experience_years" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="personal_photo" class="control-label"></label>
+                <input asp-for="personal_photo" class="form-control" />
+                <span asp-validation-for="personal_photo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="dept_id" class="control-label"></label>
+                <select asp-for="dept_id" class="form-control" asp-items="ViewBag.dept_id"></select>
+                <span asp-validation-for="dept_id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
