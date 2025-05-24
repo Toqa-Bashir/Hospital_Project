@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using CareNet_System.Models;
 using CareNet_System.Repostatory;
+using CareNet_System.Repository;
+using CareNet_System.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CareNet_System
 {
@@ -13,10 +17,29 @@ namespace CareNet_System
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-           
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+            });
+
+
 
             builder.Services.AddDbContext<HosPitalContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("cs")); });
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IRepository<Staff>, StaffRepository>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+            builder.Services.AddScoped<IBillsRepository, BillsRepository>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+.AddCookie();
+
 
             var app = builder.Build();
 
@@ -32,7 +55,7 @@ namespace CareNet_System
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

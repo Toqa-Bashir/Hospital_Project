@@ -1,0 +1,50 @@
+﻿﻿@using CareNet_System.ViewModel;
+@model AddPatientVM;
+
+@{
+    ViewData["Title"] = "AddNewPatient";
+    SelectList DeptSelectList = new SelectList(ViewBag.DeptList, "Id", "name");
+}
+
+<h1>AddNewPatient</h1>
+<form method="post" asp-action="SaveNew" asp-controller="Patient">
+    @Html.AntiForgeryToken()
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="RoomNum"></label>
+        <input asp-for="RoomNum" class="form-control" />
+        <span asp-validation-for="RoomNum" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="followUp_doctorID"></label>
+        <select asp-for="followUp_doctorID" asp-items="ViewBag.DoctorsList" class="form-control">
+            <option value="">-- Select Doctor --</option>
+        </select>
+        <span asp-validation-for="followUp_doctorID" class="text-danger"></span>
+    </div>
+
+
+    <div> 
+          <label asp-for="DeptId"></label>  
+        <select asp-for="DeptId" asp-items="DeptSelectList" class="form-control">
+         <option value="">-- Select Department --</option> 
+       </select> 
+       <span asp-validation-for="DeptId" class="text-danger"></span> 
+    </div> 
+
+    <input type="submit" value="➕ADD" class="btn btn-success" />
+</form>
+
+<a asp-action="ShowAllPatients" asp-controller="Patient" class="btn btn-secondary">Back to All Patients </a>
+
+
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,24 @@
+﻿﻿
+@model CareNet_System.Models.Patient
+
+@{
+    ViewData["Title"] = "ConfirmDelete";
+}
+
+<h2>⚠️ Confirm Patient Deletion</h2>
+
+<div class="alert alert-warning">
+    <p>Are you sure you want to delete the following patient?</p>
+    <ul>
+        <li><strong>Name:</strong> @Model.name</li>
+        <li><strong>Room Number:</strong> @Model.room_num</li>
+    </ul>
+</div>
+
+<form asp-action="ConfirmDelete" asp-controller="Patient" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-danger">🗑️ Yes, Delete</button>
+    <a asp-action="ShowAllPatients" class="btn btn-secondary">Cancel</a>
+</form>

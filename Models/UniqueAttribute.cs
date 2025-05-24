@@ -18,7 +18,7 @@ namespace CareNet_System.Models
             }
             else
             {
-                return new ValidationResult($"The course {deptFromDB.name} alreadt exsits in this department ");
+                return new ValidationResult($"The department {deptFromDB.name} alreadt exsits in the Hospital System ");
             }
         }
         }
