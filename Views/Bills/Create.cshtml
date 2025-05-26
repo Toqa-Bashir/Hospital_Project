@@ -95,21 +95,3 @@
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-    <script>
-        $(document).ready(function() {
-            $('#billForm').on('submit', function(e) {
-                if ($(this).valid()) {
-                    $('button[type="submit"]').html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Creating...');
-                    $('button[type="submit"]').prop('disabled', true);
-                } else {
-                    e.preventDefault();
-                }
-            });
-        });
-    </script>
-}

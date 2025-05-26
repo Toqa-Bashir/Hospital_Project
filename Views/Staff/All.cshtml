@@ -1,0 +1,42 @@
+﻿﻿@using CareNet_System.Models;
+@model List<Staff>;
+@{
+    ViewData["Title"] = "All";
+
+}
+
+<h1>All Staff</h1>
+<div class="mb-3">
+    <a class="btn btn-primary" asp-controller="Staff" asp-action="NewStf">
+        ➕ ADD NEW EMPLOYEE
+    </a>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+           
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body" style="border:1px solid black;">
+                        <h5 class="card-title">👤Name :@item.name</h5>
+                        <img src="@item.personal_photo" class="img-fluid rounded mx-auto d-block" alt="Staff photo" />
+
+
+
+                        <p class="card-number"> Title: @item.title</p>
+                        <p class="card-number"> Seniority: @item.seniority_level</p>
+                        <p class="card-number"> Salary: @item.salary</p>
+                        <p class="card-number"> Experience: @item.experience_years</p>
+
+                        
+                        <a asp-action="Edit" asp-controller="Staff" asp-route-id="@item.Id" class="btn btn-warning">✏️ Update</a>
+                        <a asp-action="Delete" asp-controller="Staff" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to permanently delete @item.name department ?')">🗑️ Delete</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+

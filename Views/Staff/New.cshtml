@@ -1,24 +1,25 @@
-﻿﻿﻿@using CareNet_System.Models;
+﻿﻿@using CareNet_System.Models;
 @model Staff;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "New";
     ViewBag.SeniorityList = new SelectList(new List<string> { "Senior", "Junior" });
     ViewBag.TitleList = new SelectList(new List<string> { "Doctor", "Nurse" ,"Administrative" });
 
 }
 
-<h1>Update Employee</h1>
-<form method="post" asp-action="Edit" asp-controller="Staff">
+<h1>Add New Employee</h1>
+<form method="post" asp-action="NewStf" asp-controller="Staff">
     @Html.AntiForgeryToken()
     <div class="text-danger" asp-validation-summary="All"></div>
-    <input type="hidden" asp-for="Id" />
+
     <div>
         <label asp-for="name"></label>
         <input asp-for="name" class="form-control" />
+        <span asp-validation-for="name" class="text-danger"></span>
     </div>
-    <span asp-validation-for="name" class="text-danger"></span>
-    
+
+    <div>
         <label asp-for="title"></label>
         <select asp-for="title" asp-items="ViewBag.TitleList" class="form-control">
             <option value="">-- Select Title --</option>
@@ -29,27 +30,35 @@
     <div>
         <label asp-for="salary"></label>
         <input asp-for="salary" class="form-control" />
+        <span asp-validation-for="salary" class="text-danger"></span>
     </div>
-    <span asp-validation-for="salary" class="text-danger"></span>
+
     <div>
-        < <div>
-            <label asp-for="seniority_level"></label>
-            <select asp-for="seniority_level" asp-items="ViewBag.SeniorityList" class="form-control">
-                <option value="">-- Select Level --</option>
+        <label asp-for="seniority_level"></label>
+        <select asp-for="seniority_level" asp-items="ViewBag.SeniorityList" class="form-control">
+            <option value="">-- Select Level --</option>
 
-            </select>
-            <span asp-validation-for="seniority_level" class="text-danger"></span>
-        </div>
+        </select>
+        <span asp-validation-for="seniority_level" class="text-danger"></span>
+    </div>
 
-        <div>
+<div>
         <label asp-for="experience_years"></label>
         <input asp-for="experience_years" class="form-control" />
         <span asp-validation-for="experience_years" class="text-danger"></span>
-    </div
+    </div>
+    <div>
+        <label asp-for="dept_id"></label>
+        <input asp-for="dept_id" class="form-control" />
+        <span asp-validation-for="dept_id" class="text-danger"></span>
+    </div>
 
-    <input type="submit" value="🔄 Update" class="btn btn-primary" />
+    <input type="submit" value="➕ADD" class="btn btn-success" />
 </form>
-<a asp-action="ShowAllPatients" asp-controller="Patient" class="btn btn-secondary">Back to All Patients</a>
+
+<a asp-action="ShowAllPatients" asp-controller="Patient" class="btn btn-secondary">Back to All Patients </a>
+
+
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>   
+<script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

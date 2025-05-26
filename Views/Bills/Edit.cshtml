@@ -63,23 +63,7 @@
                                     <span asp-validation-for="total_amount" class="text-danger"></span>
                                 </div>
 
-                                @* <div class="mb-3">
-                                    <label asp-for="Payment_Method" class="form-label">Payment Method</label>
-                                    <div class="d-flex">
-                                        @foreach (var method in PaymentMethods)
-                                        {
-                                            <div class="form-check me-3">
-                                                <input class="form-check-input" type="radio" name="Payment_Method"
-                                                       id="payment_@method.Text" value="@method.Value"
-                                                @(method.Value == Model.Payment_Method ? "checked" : "") />
-                                                <label class="form-check-label" for="payment_@method.Text">
-                                                    @method.Text
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                    <span asp-validation-for="Payment_Method" class="text-danger"></span>
-                                </div> *@
+                              
                             </div>
                         </div>
                     </div>
@@ -93,31 +77,11 @@
                         <button type="submit" class="btn btn-primary me-2">
                             <i class="bi bi-save me-1"></i> Save Changes
                         </button>
-                        <!-- Optional: Add delete button if needed -->
-                        @* <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="bi bi-trash me-1"></i> Delete
-                        </button> *@
+                      
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-    <script>
-        $(document).ready(function() {
-            $('#billForm').on('submit', function() {
-                if ($(this).valid()) {
-                    // Add loading state to submit button
-                    $('button[type="submit"]').html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saving...');
-                    $('button[type="submit"]').prop('disabled', true);
-                }
-            });
-        });
-    </script>
 }

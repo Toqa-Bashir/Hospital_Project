@@ -20,7 +20,7 @@ namespace CareNet_System.Controllers
         public IActionResult NewDept(Department newDept) { 
             Department dept = new Department();
 
-            // dept.Id = newDept.Id;
+            
 
             if (ModelState.IsValid)
             {

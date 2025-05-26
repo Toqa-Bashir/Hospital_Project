@@ -1,48 +1,56 @@
 ﻿using CareNet_System.Models;
 using CareNet_System.Repository;
 using Microsoft.EntityFrameworkCore;
-public class StaffRepository : IRepository<Staff>
+public class StaffRepository : IStaffRepository
 {
-    private readonly HosPitalContext _context;
+    HosPitalContext context;
 
-    public StaffRepository(HosPitalContext context)
+    public StaffRepository(HosPitalContext ctx)
     {
-        _context = context;
+        context = ctx;
+
     }
 
     public List<Staff> GetAll()
     {
-        return _context.Staff.Include(s => s.department).ToList();
-    }
 
-    public Staff GetById(int id)
-    {
-        return _context.Staff
-            .Include(s => s.department)
-            .FirstOrDefault(s => s.Id == id);
+        return context.Staff.ToList();
     }
 
     public void Add(Staff obj)
     {
-        _context.Staff.Add(obj);
+        context.Staff.Add(obj);
     }
 
     public void Update(Staff obj)
     {
-        _context.Staff.Update(obj);
-    }
 
+        List<Staff> staffList = context.Staff.ToList();
+
+        Staff stf = context.Staff.FirstOrDefault(s => s.Id == obj.Id);
+
+      stf.name = obj.name;
+        stf.title = obj.title;
+        stf.salary = obj.salary;
+        stf.seniority_level = obj.seniority_level;
+        stf.experience_years = obj.experience_years;
+    }
     public void Delete(int id)
     {
-        var staff = _context.Staff.Find(id);
-        if (staff != null)
-        {
-            _context.Staff.Remove(staff);
-        }
+        context.Staff.Remove(context.Staff.FirstOrDefault(s => s.Id == id));
     }
 
     public void Save()
     {
-        _context.SaveChanges();
+        context.SaveChanges();
+    }
+
+    public Staff GetById(int id)
+    {
+        return context.Staff.FirstOrDefault(s => s.Id == id);
+
+
+
     }
 }
+

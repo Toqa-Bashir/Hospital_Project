@@ -12,9 +12,9 @@ namespace CareNet_System.Controllers
     {
         IPatientRepository PatientReop;
         IDepartmentRepository DeptRepo;
-        IRepository<Staff> StaffRepo;
+        IStaffRepository StaffRepo;
 
-        public PatientController(IPatientRepository patientrepo, IDepartmentRepository deptrepo, IRepository<Staff> sttaffrepo)
+        public PatientController(IPatientRepository patientrepo, IDepartmentRepository deptrepo, IStaffRepository sttaffrepo)
         {
             PatientReop = patientrepo;
             DeptRepo = deptrepo;
@@ -50,10 +50,6 @@ namespace CareNet_System.Controllers
 
         public IActionResult AddNewPatient()
         {
-            //AddPatientVM Newpatient = new AddPatientVM
-            //{
-            //    Departments = DeptRepo.GetAll()
-            //};
             List<Staff> doctors = StaffRepo.GetAll().Where(s => s.title == StaffTitle.Doctor).ToList();
             ViewBag.DoctorsList = new SelectList(doctors, "Id", "name");
             ViewBag.DeptList = DeptRepo.GetAll();
@@ -78,13 +74,10 @@ namespace CareNet_System.Controllers
                 };
 
 
-                //Patient newPatient = new Patient();
-                //newPatient.name = vm.Name;
-                //newPatient.room_num = vm.RoomNum;
-                //newPatient.dept_id = vm.DeptId;
+               
                 PatientReop.Add(newpatient);
                 PatientReop.Save();
-                //return Content("Patient added successfully!");
+               
 
                 return RedirectToAction("ShowAllPatients");
             }
@@ -102,12 +95,10 @@ namespace CareNet_System.Controllers
             {
                 return NotFound();
             }
-            //ViewBag.DeptList = DeptRepo.GetAll();
-            //ViewBag.DoctorsList = StaffRepo.GetAll().Where(s => s.title == StaffTitle.Doctor).ToList();
-            // ✅ تعديل: تحويل قائمة الأقسام إلى SelectList
+           
             ViewBag.DeptList = new SelectList(DeptRepo.GetAll(), "Id", "name");
 
-            // ✅ تعديل: تحويل قائمة الأطباء إلى SelectList
+          
             ViewBag.DoctorsList = new SelectList(
                 StaffRepo.GetAll().Where(s => s.title == StaffTitle.Doctor).ToList(),
                 "Id", "name"
@@ -156,8 +147,7 @@ namespace CareNet_System.Controllers
                 return RedirectToAction("ShowAllPatients");
             }
 
-            //patientFromReq.Departments = DeptRepo.GetAll();
-            // ✅ تعديل: إعادة تحميل قائمة الأقسام والأطباء عند حدوث خطأ في التحديث
+           
             ViewBag.DeptList = DeptRepo.GetAll();
             ViewBag.DoctorsList = new SelectList(
                 StaffRepo.GetAll().Where(s => s.title == StaffTitle.Doctor).ToList(),
